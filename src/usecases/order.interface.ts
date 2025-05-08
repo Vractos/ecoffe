@@ -10,6 +10,6 @@ export interface IOrderRepository {
 export interface IOrderService {
   createOrder(order: Order): Promise<Order>;
   getAllOrders(): Promise<Order[]>;
-  updateOrderStatus(id: string, status: OrderStatus): Promise<Order | null>;
-  getOrdersByStatus(status: OrderStatus): Promise<Order[]>;
+  updateOrderStatus(id: string, status: string): Promise<void>;
+  getOrdersByStatus(status: string): Promise<Order[]>;
 }

@@ -8,48 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model clients {
-  id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name   String   @db.VarChar(80)
-  email  String   @unique @db.VarChar(80)
-  orders orders[]
-}
-
-model items {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String        @db.VarChar(80)
-  description String?       @db.VarChar(255)
-  price       Decimal       @db.Decimal(10, 2)
-  quantity    Int           @default(0) @db.SmallInt
-  order_items order_items[]
-}
-
 model migrations {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(255)
   applied_at DateTime? @default(now()) @db.Timestamp(6)
 }
 
-model order_items {
-  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  order_id String  @db.Uuid
-  item_id  String  @db.Uuid
-  price    Decimal @db.Decimal(10, 2)
-  quantity Int     @db.SmallInt
-  items    items   @relation(fields: [item_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  orders   orders  @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model orders {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  client_id   String        @db.Uuid
-  observation String?       @db.VarChar(255)
-  status      Int           @default(0) @db.SmallInt
-  created_at  DateTime?     @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime?     @default(now()) @db.Timestamptz(6)
-  order_items order_items[]
-  clients     clients       @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  client      String    @db.VarChar(255)
+  item        String    @db.VarChar(255)
+  quantity    Int       @db.SmallInt
+  observation String?   @db.VarChar(255)
+  status      String    @default("Pendente") @db.VarChar(60)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
 
   @@index([status], map: "idx_orders_status")
 }

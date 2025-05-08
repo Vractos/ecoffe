@@ -1,62 +1,50 @@
-import { Order, OrderStatus } from './order';
-import { Item } from './item';
-import { OrderItem } from './orderItem';
-import { Client } from './client';
-
-const mockItem = new Item({
-  id: '1',
-  name: 'Test Item',
-  description: 'This is a test item',
-  price: 100,
-  quantity: 10,
-});
-
-const mockOrderItem = new OrderItem({
-  id: '321',
-  itemId: mockItem.id,
-  quantity: 1,
-  price: 12.5,
-  orderId: '123'
-})
-
-const mockClient = new Client({
-  id: '123',
-  name: 'John',
-  email: 'john@mail.com'
-})
+import { Order, ORDER_STATUS } from './order';
 
 describe('Order Creation', () => {
   test('Create an order', () => {
     const order = new Order({
       id: '123',
-      customerId: mockClient.id,
-      orderItems: [mockOrderItem], 
+      client: "John",
+      item: "Coffee M",
+      quantity: 1,
       observation: 'Test observation',
-      status: OrderStatus.PENDING,
+      status: ORDER_STATUS.PENDING,
       createdAt: new Date(),
-      updatedAt: new Date(),
     });
 
     expect(order).toBeInstanceOf(Order);
     expect(order.id).toBe('123');
-    expect(order.customerId).toBe('123');
-    expect(order.orderItems.length).toBe(1);
-    expect(order.orderItems[0].id).toBe('321');
+    expect(order.client).toBe('John');
+    expect(order.item).toBe('Coffee M');
+    expect(order.quantity).toBe(1);
     expect(order.observation).toBe('Test observation');
-    expect(order.status).toBe(OrderStatus.PENDING);
+    expect(order.status).toBe(ORDER_STATUS.PENDING);
   });
 
   test('Create an order with no items', () => {
     expect(() => {
       new Order({
         id: '123',
-        customerId: mockClient.id,
-        orderItems: [], 
+        client: "John",
+        item: "",
+        quantity: 1,
         observation: 'Test observation',
-        status: OrderStatus.PENDING,
+        status: ORDER_STATUS.PENDING,
         createdAt: new Date(),
-        updatedAt: new Date(),
       });
-    }).toThrow('At least one item is required');
+    }).toThrow("Item is required");
   });
+
+  test('Creating an order without passing an ID', () => {
+    const order = new Order({
+      client: "John",
+      item: "Coffee M",
+      quantity: 1,
+      observation: 'Test observation',
+      status: ORDER_STATUS.PENDING,
+      createdAt: new Date(),
+    });
+
+    expect((typeof order.id)).toBe('string')
+  })
 })
