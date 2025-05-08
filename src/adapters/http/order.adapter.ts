@@ -76,21 +76,5 @@ export function createOrderRouter(orderService: OrderService): Router {
     }
   });
 
-  // router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { s } = req.query;
-  //     const orderStatusSchema = z.enum([ORDER_STATUS.PENDING, ORDER_STATUS.IN_PROGRESS, ORDER_STATUS.COMPLETED, ORDER_STATUS.DELIVERING, ORDER_STATUS.DELIVERED, ORDER_STATUS.CANCELED]);
-  //     const parsedStatus = orderStatusSchema.parse(s);
-  //     const orders = await orderService.getOrdersByStatus(parsedStatus);
-  //     res.status(200).json(orders);
-  //   } catch (error) {
-  //     if (error instanceof z.ZodError) {
-  //       res.status(400).json({ error: error.errors });
-  //     } else {
-  //       next(error);
-  //     }
-  //   }
-  // });
-
   return router;
 }
