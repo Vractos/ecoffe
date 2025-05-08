@@ -1,8 +1,31 @@
 version: "3.8"
 
 services:
+  ecoffee:
+    container_name: ecoffee
+    env_file:
+      - .env.prod
+    build: .
+    image: ecoffee
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - REPOSITORY_TYPE=${REPOSITORY_TYPE}
+    depends_on:
+      - postgres
+    networks:
+      - prisma-network
   postgres:
     container_name: postgres-ecoffee
+    env_file:
+      - .env.prod
     image: postgres:14.5
     restart: unless-stopped
     ports:
@@ -13,6 +36,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/schema/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - prisma-network
+
+networks:
+  prisma-network:
+    name: prisma-network
 
 volumes:
   postgres_data:

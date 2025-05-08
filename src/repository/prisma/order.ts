@@ -1,5 +1,5 @@
-import { PrismaClient } from '../../../generated/prisma/client';
-import { PrismaClientKnownRequestError } from '../../../generated/prisma/runtime/library';
+import { PrismaClient } from '../../generated/client';
+import { PrismaClientKnownRequestError } from '../../generated/client/runtime/library';
 import { Order, OrderStatus } from '../../entities/order';
 import { IOrderRepository } from '../../usecases/order.interface';
 
