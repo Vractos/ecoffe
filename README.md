@@ -67,3 +67,50 @@ docker-compose up --build
 - `database/`: Scripts SQL para inicialização do banco de dados.
 - `docker-compose.yml`: Arquivo de configuração do Docker Compose.
 - `Dockerfile`: Arquivo para construção da imagem Docker da aplicação.
+
+# Endpoints da API
+
+Abaixo estão exemplos de como interagir com a API usando comandos `curl`:
+
+## Criar um Novo Pedido
+```bash
+curl --request POST \
+  --url http://localhost:3000/orders \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "client": "Maria",
+    "item": "Cold Brew",
+    "quantity": 1,
+    "observation": "Com leite zero lactose"
+}'
+```
+
+## Obter Todos os Pedidos
+```bash
+curl --request GET \
+  --url http://localhost:3000/orders
+```
+
+## Obter Pedidos por Status
+```bash
+curl --request GET \
+  --url 'http://localhost:3000/orders?s=Entregue'
+```
+
+**Status Disponíveis:**
+- Pendente
+- Preparando
+- Pronto
+- A Caminho
+- Entregue
+- Cancelado
+
+## Atualizar Status do Pedido
+```bash
+curl --request PATCH \
+  --url http://localhost:3000/orders/bcacfc97-7bb2-4791-acf3-95780fa40955 \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "status": "Pronto"
+}'
+```
