@@ -27,9 +27,9 @@ export class OrderService implements IOrderService {
     }
   }
 
-  async updateOrderStatus(id: string, status: OrderStatus): Promise<void> {
+  async updateOrderStatus(id: string, status: OrderStatus): Promise<Order | null> {
     try {
-      await this._orderRepository.updateStatus(id, status);
+      return await this._orderRepository.updateStatus(id, status);
     } catch (error) {
       throw new Error(`Error updating order status: ${error}`);
     }
